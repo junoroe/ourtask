@@ -11,55 +11,46 @@ export async function GET(req: Request) {
     const category = url.searchParams.get('category');
     const status = url.searchParams.get('status');
 
-    // Haversine distance calculation in SQL (returns km)
-    let sql = `
-      SELECT t.id, t.title, t.slug, t.category, t.status,
-             t.latitude, t.longitude, t.address, t.event_date,
-             t.volunteers_needed, t.volunteers_count,
-             t.photo_url, t.photo_after_url, t.created_at,
-             u.name as creator_name,
-             (6371 * acos(
-               cos(radians($1)) * cos(radians(t.latitude)) *
-               cos(radians(t.longitude) - radians($2)) +
-               sin(radians($1)) * sin(radians(t.latitude))
-             )) AS distance_km
-      FROM tasks t
-      JOIN users u ON t.user_id = u.id
-      WHERE t.is_approved = true
-    `;
-    
+    // Use subquery to filter by distance
+    let innerWhere = `t.is_approved = true`;
     const params: any[] = [lat, lng];
     let paramIndex = 3;
 
     if (status === 'completed') {
-      sql += ` AND t.status = 'completed'`;
+      innerWhere += ` AND t.status = 'completed'`;
     } else {
-      sql += ` AND t.status IN ('open', 'scheduled', 'in_progress')`;
+      innerWhere += ` AND t.status IN ('open', 'scheduled', 'in_progress')`;
     }
 
     if (category) {
-      sql += ` AND t.category = $${paramIndex++}`;
+      innerWhere += ` AND t.category = $${paramIndex++}`;
       params.push(category);
     }
 
-    sql += `
-      HAVING (6371 * acos(
-        cos(radians($1)) * cos(radians(t.latitude)) *
-        cos(radians(t.longitude) - radians($2)) +
-        sin(radians($1)) * sin(radians(t.latitude))
-      )) < $${paramIndex++}
-      ORDER BY distance_km ASC
-      LIMIT 100
-    `;
     params.push(radius);
 
-    // Wrap in subquery to use HAVING with alias
-    const wrappedSql = `
-      SELECT * FROM (${sql}) AS nearby
+    const sql = `
+      SELECT * FROM (
+        SELECT t.id, t.title, t.slug, t.category, t.status,
+               t.latitude, t.longitude, t.address, t.event_date,
+               t.volunteers_needed, t.volunteers_count,
+               t.photo_url, t.photo_after_url, t.created_at,
+               u.name as creator_name,
+               (6371 * acos(
+                 LEAST(1.0, cos(radians($1)) * cos(radians(t.latitude)) *
+                 cos(radians(t.longitude) - radians($2)) +
+                 sin(radians($1)) * sin(radians(t.latitude)))
+               )) AS distance_km
+        FROM tasks t
+        JOIN users u ON t.user_id = u.id
+        WHERE ${innerWhere}
+      ) AS nearby
+      WHERE nearby.distance_km < $${paramIndex}
       ORDER BY nearby.distance_km ASC
+      LIMIT 100
     `;
 
-    const result = await query(wrappedSql, params);
+    const result = await query(sql, params);
     return NextResponse.json({ tasks: result.rows });
   } catch (error: any) {
     console.error('Nearby tasks error:', error.message);
