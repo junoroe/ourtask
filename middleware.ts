@@ -29,7 +29,14 @@ export function middleware(request: NextRequest) {
   );
   response.headers.set(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.tile.openstreetmap.org; connect-src 'self' https://nominatim.openstreetmap.org; font-src 'self'"
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "style-src 'self' 'unsafe-inline' https://unpkg.com",
+      "img-src 'self' data: blob: https://*.tile.openstreetmap.org https://unpkg.com",
+      "connect-src 'self' https://nominatim.openstreetmap.org",
+      "font-src 'self'",
+    ].join('; ')
   );
 
   return response;
@@ -37,6 +44,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|logo).*)',
+    '/((?!_next/static|_next/image|favicon.ico|logo|uploads).*)',
   ],
 };
