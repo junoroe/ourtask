@@ -31,6 +31,13 @@ yarn-error.log*
 # vercel
 .vercel
 
+# uploads (user photos stored on disk)
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# env
+.env
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -32,6 +32,9 @@ export default function PostTaskPage() {
   const [estimatedDuration, setEstimatedDuration] = useState('');
   const [volunteersNeeded, setVolunteersNeeded] = useState(5);
   const [photoUrl, setPhotoUrl] = useState('');
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState('');
+  const [uploading, setUploading] = useState(false);
   const [searchingLocation, setSearchingLocation] = useState(false);
 
   useEffect(() => {
@@ -92,6 +95,29 @@ export default function PostTaskPage() {
 
     try {
       const token = localStorage.getItem('token');
+
+      // Upload photo if selected
+      let finalPhotoUrl = photoUrl;
+      if (photoFile) {
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('file', photoFile);
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData,
+        });
+        const uploadData = await uploadRes.json();
+        if (!uploadRes.ok) {
+          setError(uploadData.error || 'Photo upload failed');
+          setSubmitting(false);
+          setUploading(false);
+          return;
+        }
+        finalPhotoUrl = uploadData.url;
+        setUploading(false);
+      }
+
       const res = await fetch('/api/tasks', {
         method: 'POST',
         headers: {
@@ -108,7 +134,7 @@ export default function PostTaskPage() {
           event_date: eventDate || null,
           estimated_duration: estimatedDuration || null,
           volunteers_needed: volunteersNeeded,
-          photo_url: photoUrl || null,
+          photo_url: finalPhotoUrl || null,
         }),
       });
 
@@ -213,15 +239,43 @@ export default function PostTaskPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Photo (URL)
+                Photo
               </label>
-              <input
-                type="url"
-                value={photoUrl}
-                onChange={(e) => setPhotoUrl(e.target.value)}
-                placeholder="https://... (paste a link to a photo of the area)"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
+              <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-green-400 transition-colors">
+                {photoPreview ? (
+                  <div className="relative">
+                    <img src={photoPreview} alt="Preview" className="max-h-48 mx-auto rounded-lg" />
+                    <button
+                      type="button"
+                      onClick={() => { setPhotoFile(null); setPhotoPreview(''); setPhotoUrl(''); }}
+                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs font-bold"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ) : (
+                  <label className="cursor-pointer block">
+                    <span className="text-3xl block mb-2">📷</span>
+                    <span className="text-sm text-gray-500">Tap to add a photo</span>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          if (file.size > 5 * 1024 * 1024) {
+                            setError('Photo must be under 5MB');
+                            return;
+                          }
+                          setPhotoFile(file);
+                          setPhotoPreview(URL.createObjectURL(file));
+                        }
+                      }}
+                    />
+                  </label>
+                )}
+              </div>
             </div>
 
             <div className="flex gap-3 pt-2">
@@ -340,7 +394,7 @@ export default function PostTaskPage() {
                 disabled={submitting}
                 className="btn-primary flex-1 disabled:opacity-50"
               >
-                {submitting ? 'Posting...' : '🌿 Post Task'}
+                {uploading ? 'Uploading photo...' : submitting ? 'Posting...' : '🌿 Post Task'}
               </button>
             </div>
           </div>
