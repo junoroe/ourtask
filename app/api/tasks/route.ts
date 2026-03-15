@@ -43,7 +43,7 @@ export async function GET(req: Request) {
              t.latitude, t.longitude, t.address, t.event_date,
              t.estimated_duration, t.volunteers_needed, t.volunteers_count,
              t.photo_url, t.photo_after_url, t.created_at, t.completed_at,
-             u.name as creator_name, u.id as creator_id
+             u.name as creator_name
       FROM tasks t
       JOIN users u ON t.user_id = u.id
       WHERE t.is_approved = true
@@ -105,6 +105,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid location coordinates' }, { status: 400 });
     }
 
+    // Validate volunteers_needed bounds
+    const volNeeded = Math.max(1, Math.min(parseInt(volunteers_needed) || 1, 500));
+
+    // Validate photo_url if provided (must be a local upload)
+    const validPhotoUrl = photo_url && /^\/uploads\/\d+-[a-f0-9]+\.(jpg|png|webp)$/.test(photo_url)
+      ? photo_url : null;
+
     const slug = sanitizeText(title)
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
@@ -131,7 +138,7 @@ export async function POST(req: Request) {
       `INSERT INTO tasks (user_id, title, slug, description, category, latitude, longitude, address, city, event_date, estimated_duration, volunteers_needed, photo_url, is_approved)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
        RETURNING id, slug`,
-      [user.id, sanitizeText(title), slug, sanitizeText(description), category, latitude, longitude, address || null, city, event_date || null, estimated_duration || null, volunteers_needed || 1, photo_url || null, isApproved]
+      [user.id, sanitizeText(title), slug, sanitizeText(description), category, latitude, longitude, address || null, city, event_date || null, estimated_duration || null, volNeeded, validPhotoUrl, isApproved]
     );
 
     // Log moderation result

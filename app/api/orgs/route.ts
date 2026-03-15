@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { query } from '../../../lib/db';
 import { getCurrentUser } from '../../../lib/auth';
+import { isValidEmail } from '../../../lib/validation';
 
 // GET /api/orgs — list organizations
 export async function GET(req: Request) {
@@ -49,6 +50,18 @@ export async function POST(req: Request) {
 
     if (name.length < 3 || name.length > 255) {
       return NextResponse.json({ error: 'Name must be 3-255 characters' }, { status: 400 });
+    }
+
+    if (!isValidEmail(contact_email)) {
+      return NextResponse.json({ error: 'Invalid contact email address' }, { status: 400 });
+    }
+
+    if (description && description.length > 2000) {
+      return NextResponse.json({ error: 'Description must be under 2000 characters' }, { status: 400 });
+    }
+
+    if (website && (website.length > 500 || !/^https?:\/\//i.test(website))) {
+      return NextResponse.json({ error: 'Website must be a valid URL' }, { status: 400 });
     }
 
     const validCategories = ['nonprofit', 'government', 'community', 'religious', 'other'];

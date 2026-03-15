@@ -30,15 +30,26 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'File must be under 5MB' }, { status: 400 });
     }
 
-    // Generate unique filename
-    const ext = file.type.split('/')[1] === 'jpeg' ? 'jpg' : file.type.split('/')[1];
+    // Validate magic bytes match claimed MIME type
+    const bytes = await file.arrayBuffer();
+    const header = new Uint8Array(bytes).slice(0, 12);
+    const isJpeg = header[0] === 0xFF && header[1] === 0xD8 && header[2] === 0xFF;
+    const isPng = header[0] === 0x89 && header[1] === 0x50 && header[2] === 0x4E && header[3] === 0x47;
+    const isWebp = header[0] === 0x52 && header[1] === 0x49 && header[2] === 0x46 && header[3] === 0x46
+                && header[8] === 0x57 && header[9] === 0x45 && header[10] === 0x42 && header[11] === 0x50;
+
+    if (!isJpeg && !isPng && !isWebp) {
+      return NextResponse.json({ error: 'File content does not match an allowed image format' }, { status: 400 });
+    }
+
+    // Determine extension from actual content, not claimed MIME
+    const ext = isJpeg ? 'jpg' : isPng ? 'png' : 'webp';
     const filename = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}.${ext}`;
 
     // Ensure upload dir exists
     await mkdir(UPLOAD_DIR, { recursive: true });
 
     // Write file with path containment check
-    const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const filepath = path.resolve(UPLOAD_DIR, filename);
     if (!filepath.startsWith(path.resolve(UPLOAD_DIR))) {

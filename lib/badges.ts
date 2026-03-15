@@ -99,7 +99,7 @@ export async function getUserBadges(userId: number) {
 // Leaderboard
 export async function getLeaderboard(limit: number = 20) {
   const result = await query(
-    `SELECT u.id, u.name, u.volunteer_count, u.tasks_created,
+    `SELECT u.name, u.volunteer_count, u.tasks_created,
             (SELECT COUNT(*) FROM tasks WHERE user_id = u.id AND status = 'completed') as completed_count,
             (SELECT COUNT(*) FROM user_badges WHERE user_id = u.id) as badge_count
      FROM users u

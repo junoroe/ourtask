@@ -33,7 +33,8 @@ export async function POST(req: Request) {
     const result = await query('SELECT id, email, name, password_hash FROM users WHERE email = $1', [normalizedEmail]);
     
     if (result.rows.length === 0) {
-      // Log failed attempt (unknown email — use consistent timing)
+      // Dummy bcrypt compare to prevent timing-based user enumeration
+      await verifyPassword(password, '$2a$12$000000000000000000000uGzFwxe0bLqb7sFKWBAAVMnyGJGqkqe');
       await query(
         'INSERT INTO login_attempts (email, success) VALUES ($1, false)',
         [normalizedEmail]

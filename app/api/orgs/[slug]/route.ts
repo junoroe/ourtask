@@ -5,7 +5,9 @@ import { query } from '../../../../lib/db';
 export async function GET(req: Request, { params }: { params: { slug: string } }) {
   try {
     const orgResult = await query(
-      `SELECT o.*, COUNT(DISTINCT om.id) as member_count
+      `SELECT o.id, o.name, o.slug, o.description, o.website, o.logo_url,
+              o.category, o.is_verified, o.verified_at, o.created_at,
+              COUNT(DISTINCT om.id) as member_count
        FROM organizations o
        LEFT JOIN org_members om ON om.org_id = o.id
        WHERE o.slug = $1

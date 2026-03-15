@@ -50,7 +50,7 @@ export default function LeaderboardPage() {
               </thead>
               <tbody>
                 {leaders.map((user, i) => (
-                  <tr key={user.id} className={`border-b border-gray-50 ${i < 3 ? 'bg-green-50/30' : ''}`}>
+                  <tr key={i} className={`border-b border-gray-50 ${i < 3 ? 'bg-green-50/30' : ''}`}>
                     <td className="px-5 py-4 text-lg font-bold">
                       {i < 3 ? medals[i] : <span className="text-gray-400 text-sm">{i + 1}</span>}
                     </td>
