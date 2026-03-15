@@ -19,7 +19,7 @@ export default function CitiesPage() {
     <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: 'var(--forest)' }}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: 'var(--dark)' }}>
             🏘️ City Dashboards
           </h1>
           <p className="text-gray-600 text-lg max-w-xl mx-auto">
@@ -43,11 +43,11 @@ export default function CitiesPage() {
                   <h3 className="text-lg font-bold text-gray-900 mb-3">📍 {city.city}</h3>
                   <div className="grid grid-cols-3 gap-2 text-center">
                     <div>
-                      <p className="text-xl font-bold" style={{ color: 'var(--forest)' }}>{city.total_tasks}</p>
+                      <p className="text-xl font-bold" style={{ color: 'var(--dark)' }}>{city.total_tasks}</p>
                       <p className="text-xs text-gray-500">Tasks</p>
                     </div>
                     <div>
-                      <p className="text-xl font-bold" style={{ color: 'var(--sage)' }}>{city.completed_tasks}</p>
+                      <p className="text-xl font-bold" style={{ color: 'var(--primary)' }}>{city.completed_tasks}</p>
                       <p className="text-xs text-gray-500">Done</p>
                     </div>
                     <div>

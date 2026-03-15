@@ -54,7 +54,7 @@ export default function OrgDetailPage() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-        <Link href="/orgs" className="text-sm text-gray-500 hover:text-green-700 mb-4 inline-block">
+        <Link href="/orgs" className="text-sm text-gray-500 hover:text-orange-600 mb-4 inline-block">
           ← All Organizations
         </Link>
 
@@ -64,7 +64,7 @@ export default function OrgDetailPage() {
             {org.logo_url ? (
               <img src={org.logo_url} alt={org.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover flex-shrink-0" />
             ) : (
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-green-50 flex items-center justify-center text-3xl flex-shrink-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-orange-50 flex items-center justify-center text-3xl flex-shrink-0">
                 {catInfo.icon}
               </div>
             )}
@@ -72,7 +72,7 @@ export default function OrgDetailPage() {
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{org.name}</h1>
                 {org.is_verified && (
-                  <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-semibold whitespace-nowrap">
+                  <span className="text-xs bg-orange-100 text-orange-600 px-2.5 py-1 rounded-full font-semibold whitespace-nowrap">
                     ✅ Verified Partner
                   </span>
                 )}
@@ -83,7 +83,7 @@ export default function OrgDetailPage() {
               )}
               <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-500">
                 {org.website && (
-                  <a href={org.website} target="_blank" rel="noopener noreferrer" className="text-green-700 hover:underline">
+                  <a href={org.website} target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">
                     🌐 Website
                   </a>
                 )}
@@ -95,11 +95,11 @@ export default function OrgDetailPage() {
           {/* Stats row */}
           <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-100">
             <div className="text-center">
-              <p className="text-xl font-bold" style={{ color: 'var(--forest)' }}>{tasks.length}</p>
+              <p className="text-xl font-bold" style={{ color: 'var(--dark)' }}>{tasks.length}</p>
               <p className="text-xs text-gray-500">Tasks</p>
             </div>
             <div className="text-center">
-              <p className="text-xl font-bold" style={{ color: 'var(--sage)' }}>{completedTasks.length}</p>
+              <p className="text-xl font-bold" style={{ color: 'var(--primary)' }}>{completedTasks.length}</p>
               <p className="text-xs text-gray-500">Completed</p>
             </div>
             <div className="text-center">

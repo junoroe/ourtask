@@ -3,17 +3,23 @@
 @tailwind utilities;
 
 :root {
-  --forest: #1B4332;
-  --forest-light: #2D6A4F;
-  --sage: #52B788;
-  --sage-light: #74C69D;
-  --mint: #B7E4C7;
-  --cream: #F8FAF5;
-  --earth: #8B6914;
+  /* OurTask brand palette — from logo */
+  --primary: #E8855B;         /* Coral/salmon orange — main brand */
+  --primary-dark: #D4704A;    /* Darker orange for hover states */
+  --primary-light: #F0A07A;   /* Lighter orange for highlights */
+  --accent: #F5E6C8;          /* Cream/gold — starburst accent */
+  --accent-warm: #EDD9B3;     /* Warmer accent for badges/tags */
+  --dark: #1A1A1A;            /* Near-black — headings, strong text */
+  --dark-soft: #2E2E2E;       /* Softer dark for cards/sections */
+  --cream: #FFF8F2;           /* Warm cream background */
+  --cream-dark: #FFF0E5;      /* Slightly deeper cream */
+  --earth: #8B6914;           /* Earthy gold — unchanged */
   --earth-light: #B8860B;
   --warm-gray: #6B7280;
-  --text-primary: #1a1a1a;
-  --text-secondary: #4a4a4a;
+  --text-primary: #1A1A1A;
+  --text-secondary: #5A5A5A;
+  --success: #16A34A;         /* Green kept only for success states */
+  --completed: #16A34A;
 }
 
 body {
@@ -59,22 +65,28 @@ body {
 /* Button styles */
 .btn-primary {
   @apply px-6 py-3 rounded-xl font-semibold text-white transition-all duration-200;
-  background: var(--forest);
+  background: var(--primary);
 }
 .btn-primary:hover {
-  background: var(--forest-light);
+  background: var(--primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(27,67,50,0.3);
+  box-shadow: 0 4px 15px rgba(232,133,91,0.35);
 }
 
 .btn-secondary {
   @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200;
-  background: var(--mint);
-  color: var(--forest);
+  background: var(--accent);
+  color: var(--dark);
 }
 .btn-secondary:hover {
-  background: var(--sage-light);
-  color: white;
+  background: var(--accent-warm);
+  color: var(--dark);
+}
+
+/* Input focus ring — orange instead of green */
+input:focus, textarea:focus, select:focus {
+  --tw-ring-color: var(--primary) !important;
+  border-color: var(--primary) !important;
 }
 
 /* Mobile-first responsive map */
@@ -87,4 +99,4 @@ body {
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--sage); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 3px; }

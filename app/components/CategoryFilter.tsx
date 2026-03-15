@@ -24,7 +24,7 @@ export default function CategoryFilter({ selected, onChange }: CategoryFilterPro
           onClick={() => onChange(cat.key === 'all' ? '' : cat.key)}
           className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
             (cat.key === 'all' && !selected) || cat.key === selected
-              ? 'bg-green-800 text-white shadow-md'
+              ? 'bg-orange-500 text-white shadow-md'
               : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
           }`}
         >

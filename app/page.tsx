@@ -40,9 +40,9 @@ export default function HomePage() {
       <div className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-4">
           <div className="text-center mb-6">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3" style={{ color: 'var(--forest)' }}>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3" style={{ color: 'var(--dark)' }}>
               See a problem?<br />
-              <span style={{ color: 'var(--sage)' }}>Let's fix it together.</span>
+              <span style={{ color: 'var(--primary)' }}>Let's fix it together.</span>
             </h1>
             <p className="text-gray-600 text-lg max-w-xl mx-auto">
               Real-world tasks. Real people. Real impact.
@@ -56,13 +56,13 @@ export default function HomePage() {
             <div className="hidden sm:flex gap-1 ml-4">
               <button
                 onClick={() => setView('map')}
-                className={`p-2 rounded-lg transition-colors ${view === 'map' ? 'bg-green-800 text-white' : 'bg-white text-gray-500'}`}
+                className={`p-2 rounded-lg transition-colors ${view === 'map' ? 'bg-orange-500 text-white' : 'bg-white text-gray-500'}`}
               >
                 🗺️
               </button>
               <button
                 onClick={() => setView('list')}
-                className={`p-2 rounded-lg transition-colors ${view === 'list' ? 'bg-green-800 text-white' : 'bg-white text-gray-500'}`}
+                className={`p-2 rounded-lg transition-colors ${view === 'list' ? 'bg-orange-500 text-white' : 'bg-white text-gray-500'}`}
               >
                 📋
               </button>
@@ -92,7 +92,7 @@ export default function HomePage() {
               </div>
               {tasks.length === 0 && !loading && (
                 <div className="text-center py-12 bg-white rounded-xl">
-                  <p className="text-4xl mb-3">🌿</p>
+                  <p className="text-4xl mb-3">✦</p>
                   <p className="text-gray-500 mb-2">No tasks yet in this area</p>
                   <p className="text-gray-400 text-sm">Be the first to post one!</p>
                 </div>
@@ -110,7 +110,7 @@ export default function HomePage() {
             )}
             {tasks.length === 0 && !loading && (
               <div className="col-span-full text-center py-12">
-                <p className="text-4xl mb-3">🌿</p>
+                <p className="text-4xl mb-3">✦</p>
                 <p className="text-gray-500">No tasks yet. Be the first!</p>
               </div>
             )}
@@ -122,7 +122,7 @@ export default function HomePage() {
 
         {/* Bottom CTA */}
         <div className="mt-12 text-center bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--forest)' }}>
+          <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--dark)' }}>
             Spot something that needs fixing?
           </h2>
           <p className="text-gray-600 mb-4">
@@ -138,7 +138,8 @@ export default function HomePage() {
       <footer className="border-t border-gray-200 py-8 text-center text-sm text-gray-500">
         <div className="max-w-7xl mx-auto px-4">
           <p className="mb-2">
-            <span className="text-lg">🌿</span> OurTask — Physical action for shared spaces
+            <img src="/logo.png" alt="OurTask" className="h-6 w-6 inline-block rounded mr-1 -mt-0.5" />
+            <span className="font-semibold" style={{ color: 'var(--dark)' }}>OurTask</span> — Physical action for shared spaces
           </p>
           <p className="text-xs text-gray-400">
             Not political. Not a petition. Just people showing up and making things better.

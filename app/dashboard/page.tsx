@@ -51,7 +51,7 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold" style={{ color: 'var(--forest)' }}>
+            <h1 className="text-2xl font-bold" style={{ color: 'var(--dark)' }}>
               Welcome back, {user.name} 👋
             </h1>
             <p className="text-gray-500">Here's your community impact</p>
@@ -67,7 +67,7 @@ export default function DashboardPage() {
             onClick={() => setActiveTab('tasks')}
             className={`pb-3 text-sm font-medium transition-colors ${
               activeTab === 'tasks'
-                ? 'text-green-700 border-b-2 border-green-700'
+                ? 'text-orange-600 border-b-2 border-orange-600'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -77,7 +77,7 @@ export default function DashboardPage() {
             onClick={() => setActiveTab('volunteering')}
             className={`pb-3 text-sm font-medium transition-colors ${
               activeTab === 'volunteering'
-                ? 'text-green-700 border-b-2 border-green-700'
+                ? 'text-orange-600 border-b-2 border-orange-600'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -94,7 +94,7 @@ export default function DashboardPage() {
               <div className="text-center py-12 bg-white rounded-2xl">
                 <p className="text-4xl mb-3">📋</p>
                 <p className="text-gray-500 mb-2">No tasks posted yet</p>
-                <Link href="/post" className="text-green-700 font-medium hover:underline">
+                <Link href="/post" className="text-orange-600 font-medium hover:underline">
                   Post your first task →
                 </Link>
               </div>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
           <div className="text-center py-12 bg-white rounded-2xl">
             <p className="text-4xl mb-3">🙋</p>
             <p className="text-gray-500 mb-2">Tasks you've volunteered for will appear here</p>
-            <Link href="/" className="text-green-700 font-medium hover:underline">
+            <Link href="/" className="text-orange-600 font-medium hover:underline">
               Find tasks near you →
             </Link>
           </div>

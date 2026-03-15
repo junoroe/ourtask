@@ -96,7 +96,7 @@ export default function TaskMap({ tasks, center, zoom = 11, onTaskClick }: TaskM
         const lng = parseFloat(task.longitude as any);
         if (isNaN(lat) || isNaN(lng)) return;
 
-        const color = CATEGORY_COLORS[task.category] || '#1B4332';
+        const color = CATEGORY_COLORS[task.category] || '#E8855B';
         const icon = CATEGORY_ICONS[task.category] || '📌';
 
         const divIcon = L.divIcon({
@@ -135,7 +135,7 @@ export default function TaskMap({ tasks, center, zoom = 11, onTaskClick }: TaskM
             <p style="font-size: 11px; color: #444; margin: 4px 0;">
               👥 ${task.volunteers_count}/${task.volunteers_needed} volunteers
             </p>
-            <a href="/task/${task.slug}" style="font-size: 11px; font-weight: 600; color: #15803D; text-decoration: none;">
+            <a href="/task/${task.slug}" style="font-size: 11px; font-weight: 600; color: #E8855B; text-decoration: none;">
               View Details →
             </a>
           </div>

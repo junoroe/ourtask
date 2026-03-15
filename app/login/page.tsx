@@ -46,8 +46,8 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--cream)' }}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <span className="text-4xl">🌿</span>
-          <h1 className="text-2xl font-bold mt-3" style={{ color: 'var(--forest)' }}>
+          <span className="text-4xl">✦</span>
+          <h1 className="text-2xl font-bold mt-3" style={{ color: 'var(--dark)' }}>
             Welcome back
           </h1>
           <p className="text-gray-500 mt-1">Sign in to your OurTask account</p>
@@ -65,7 +65,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
               placeholder="you@example.com"
             />
           </div>
@@ -77,7 +77,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
               placeholder="••••••••"
             />
           </div>
@@ -93,7 +93,7 @@ export default function LoginPage() {
 
         <p className="text-center mt-4 text-sm text-gray-500">
           New here?{' '}
-          <Link href="/signup" className="text-green-700 font-medium hover:underline">
+          <Link href="/signup" className="text-orange-600 font-medium hover:underline">
             Join OurTask
           </Link>
         </p>

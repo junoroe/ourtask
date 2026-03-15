@@ -44,7 +44,7 @@ export default function TaskCard({ task }: { task: Task }) {
               className="w-full h-full object-cover"
             />
             {task.photo_after_url && (
-              <div className="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded-full font-semibold">
+              <div className="absolute top-2 right-2 bg-emerald-600 text-white text-xs px-2 py-1 rounded-full font-semibold">
                 ✅ Completed
               </div>
             )}
@@ -52,7 +52,7 @@ export default function TaskCard({ task }: { task: Task }) {
         ) : (
           <div className={`h-24 flex items-center justify-center text-4xl bg-gradient-to-br ${
             task.category === 'clean' ? 'from-blue-50 to-blue-100' :
-            task.category === 'green' ? 'from-green-50 to-green-100' :
+            task.category === 'green' ? 'from-emerald-50 to-emerald-100' :
             task.category === 'fix' ? 'from-amber-50 to-amber-100' :
             task.category === 'feed' ? 'from-rose-50 to-rose-100' :
             task.category === 'build' ? 'from-purple-50 to-purple-100' :
@@ -69,7 +69,7 @@ export default function TaskCard({ task }: { task: Task }) {
               {CATEGORY_ICONS[task.category]} {task.category}
             </span>
             {task.status === 'completed' && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
                 Done ✅
               </span>
             )}

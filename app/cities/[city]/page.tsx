@@ -43,12 +43,12 @@ export default function CityDetailPage() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-        <Link href="/cities" className="text-sm text-gray-500 hover:text-green-700 mb-4 inline-block">
+        <Link href="/cities" className="text-sm text-gray-500 hover:text-orange-600 mb-4 inline-block">
           ← All Cities
         </Link>
 
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{ color: 'var(--forest)' }}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{ color: 'var(--dark)' }}>
             📍 {cityName}
           </h1>
           <p className="text-gray-600">Community impact dashboard</p>
@@ -58,11 +58,11 @@ export default function CityDetailPage() {
         {stats && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center">
-              <p className="text-3xl font-bold" style={{ color: 'var(--forest)' }}>{stats.total_tasks || 0}</p>
+              <p className="text-3xl font-bold" style={{ color: 'var(--dark)' }}>{stats.total_tasks || 0}</p>
               <p className="text-xs text-gray-500 uppercase tracking-wide mt-1">Tasks</p>
             </div>
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center">
-              <p className="text-3xl font-bold" style={{ color: 'var(--sage)' }}>{stats.completed_tasks || 0}</p>
+              <p className="text-3xl font-bold" style={{ color: 'var(--primary)' }}>{stats.completed_tasks || 0}</p>
               <p className="text-xs text-gray-500 uppercase tracking-wide mt-1">Completed</p>
             </div>
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center">
@@ -115,7 +115,7 @@ export default function CityDetailPage() {
         {tasks.length === 0 && (
           <div className="text-center py-16 bg-white rounded-2xl shadow-sm">
             <p className="text-4xl mb-3">📍</p>
-            <p className="text-gray-500">No tasks in {cityName} yet. <Link href="/post" className="text-green-700 hover:underline">Post one →</Link></p>
+            <p className="text-gray-500">No tasks in {cityName} yet. <Link href="/post" className="text-orange-600 hover:underline">Post one →</Link></p>
           </div>
         )}
       </div>

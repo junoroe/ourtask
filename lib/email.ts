@@ -61,12 +61,12 @@ function emailTemplate(title: string, body: string): string {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body style="margin: 0; padding: 0; background-color: #F8FAF5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <body style="margin: 0; padding: 0; background-color: #FFF8F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
       <div style="max-width: 560px; margin: 0 auto; padding: 24px;">
         <!-- Header -->
         <div style="text-align: center; padding: 20px 0;">
-          <span style="font-size: 28px;">🌿</span>
-          <h1 style="color: #1B4332; font-size: 22px; margin: 8px 0 0;">${escapeHtml(title)}</h1>
+          <span style="font-size: 28px;">✦</span>
+          <h1 style="color: #1A1A1A; font-size: 22px; margin: 8px 0 0;">${escapeHtml(title)}</h1>
         </div>
         
         <!-- Content -->
@@ -76,9 +76,9 @@ function emailTemplate(title: string, body: string): string {
         
         <!-- Footer -->
         <div style="text-align: center; padding: 16px 0; color: #9CA3AF; font-size: 12px;">
-          <p>🌿 OurTask — Physical action for shared spaces</p>
+          <p>✦ OurTask — Physical action for shared spaces</p>
           <p style="margin-top: 8px;">
-            <a href="${BASE_URL}" style="color: #15803D; text-decoration: none;">ourtask.org</a>
+            <a href="${BASE_URL}" style="color: #E8855B; text-decoration: none;">ourtask.org</a>
           </p>
         </div>
       </div>
@@ -114,15 +114,15 @@ export async function notifyVolunteerJoined(taskId: number, volunteerName: strin
     <p style="color: #374151; line-height: 1.6;">
       <strong>${escapeHtml(volunteerName)}</strong> just signed up for your task:
     </p>
-    <div style="background: #F0FDF4; border-radius: 12px; padding: 16px; margin: 16px 0;">
-      <h3 style="margin: 0 0 4px; color: #1B4332;">${escapeHtml(title)}</h3>
+    <div style="background: #FFF0E5; border-radius: 12px; padding: 16px; margin: 16px 0;">
+      <h3 style="margin: 0 0 4px; color: #1A1A1A;">${escapeHtml(title)}</h3>
       <p style="margin: 0; color: #6B7280; font-size: 14px;">
         👥 ${volunteers_count}/${volunteers_needed} volunteers signed up
       </p>
       ${volunteerMessage ? `<p style="margin: 8px 0 0; color: #374151; font-size: 14px; font-style: italic;">"${escapeHtml(volunteerMessage)}"</p>` : ''}
     </div>
     <div style="text-align: center; margin-top: 20px;">
-      <a href="${BASE_URL}/task/${slug}" style="display: inline-block; background: #1B4332; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600;">
+      <a href="${BASE_URL}/task/${slug}" style="display: inline-block; background: #1A1A1A; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600;">
         View Task
       </a>
     </div>
@@ -166,12 +166,12 @@ export async function notifyTaskCompleted(taskId: number) {
       <p style="color: #374151; line-height: 1.6;">
         The task you volunteered for has been marked as complete by ${escapeHtml(task.creator_name)}. Thank you for showing up and making a difference! 🎉
       </p>
-      <div style="background: #F0FDF4; border-radius: 12px; padding: 16px; margin: 16px 0;">
-        <h3 style="margin: 0 0 4px; color: #1B4332;">✅ ${escapeHtml(task.title)}</h3>
+      <div style="background: #FFF0E5; border-radius: 12px; padding: 16px; margin: 16px 0;">
+        <h3 style="margin: 0 0 4px; color: #1A1A1A;">✅ ${escapeHtml(task.title)}</h3>
       </div>
       ${task.photo_after_url ? `<img src="${BASE_URL}${task.photo_after_url}" alt="After" style="width: 100%; border-radius: 12px; margin: 16px 0;" />` : ''}
       <div style="text-align: center; margin-top: 20px;">
-        <a href="${BASE_URL}/task/${task.slug}" style="display: inline-block; background: #1B4332; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600;">
+        <a href="${BASE_URL}/task/${task.slug}" style="display: inline-block; background: #1A1A1A; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600;">
           See the Result
         </a>
       </div>
@@ -186,7 +186,7 @@ export async function notifyTaskCompleted(taskId: number) {
 }
 
 export async function sendWelcomeEmail(email: string, name: string) {
-  const subject = 'Welcome to OurTask! 🌿';
+  const subject = 'Welcome to OurTask! ✦';
   const html = emailTemplate('Welcome to OurTask', `
     <p style="color: #374151; line-height: 1.6;">
       Hey ${escapeHtml(name)},
@@ -197,7 +197,7 @@ export async function sendWelcomeEmail(email: string, name: string) {
     <p style="color: #374151; line-height: 1.6;">
       Here's how it works:
     </p>
-    <div style="margin: 16px 0; padding-left: 16px; border-left: 3px solid #52B788;">
+    <div style="margin: 16px 0; padding-left: 16px; border-left: 3px solid #E8855B;">
       <p style="color: #374151; margin: 8px 0;"><strong>1.</strong> Browse the map for tasks near you</p>
       <p style="color: #374151; margin: 8px 0;"><strong>2.</strong> Click "I'm In" to volunteer</p>
       <p style="color: #374151; margin: 8px 0;"><strong>3.</strong> Show up and do it</p>
@@ -207,7 +207,7 @@ export async function sendWelcomeEmail(email: string, name: string) {
       Or, if you see something that needs fixing — post a task and rally people to help.
     </p>
     <div style="text-align: center; margin-top: 24px;">
-      <a href="${BASE_URL}" style="display: inline-block; background: #1B4332; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600;">
+      <a href="${BASE_URL}" style="display: inline-block; background: #1A1A1A; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600;">
         Explore Tasks Near You
       </a>
     </div>
@@ -256,10 +256,10 @@ export async function sendWeeklyDigest() {
     const weekStats = stats.rows[0];
 
     const taskListHtml = tasks.rows.map((t: any) => `
-      <div style="padding: 12px; background: #F8FAF5; border-radius: 10px; margin-bottom: 8px;">
+      <div style="padding: 12px; background: #FFF8F2; border-radius: 10px; margin-bottom: 8px;">
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
           <span style="font-size: 16px;">${CATEGORY_ICONS[t.category] || '📌'}</span>
-          <a href="${BASE_URL}/task/${t.slug}" style="font-weight: 600; color: #1B4332; text-decoration: none; font-size: 14px;">
+          <a href="${BASE_URL}/task/${t.slug}" style="font-weight: 600; color: #1A1A1A; text-decoration: none; font-size: 14px;">
             ${escapeHtml(t.title)}
           </a>
         </div>
@@ -271,7 +271,7 @@ export async function sendWeeklyDigest() {
       </div>
     `).join('');
 
-    const subject = `🌿 This week on OurTask: ${tasks.rows.length} tasks need your help`;
+    const subject = `✦ This week on OurTask: ${tasks.rows.length} tasks need your help`;
     const html = emailTemplate('Your Weekly Round-Up', `
       <p style="color: #374151; line-height: 1.6;">
         Hey ${escapeHtml(user.name)},
@@ -282,25 +282,25 @@ export async function sendWeeklyDigest() {
 
       <!-- Week stats -->
       <div style="display: flex; gap: 12px; margin: 16px 0; text-align: center;">
-        <div style="flex: 1; background: #F0FDF4; border-radius: 10px; padding: 12px;">
-          <p style="font-size: 20px; font-weight: 700; color: #1B4332; margin: 0;">${weekStats.new_tasks}</p>
+        <div style="flex: 1; background: #FFF0E5; border-radius: 10px; padding: 12px;">
+          <p style="font-size: 20px; font-weight: 700; color: #1A1A1A; margin: 0;">${weekStats.new_tasks}</p>
           <p style="font-size: 11px; color: #6B7280; margin: 4px 0 0;">New Tasks</p>
         </div>
-        <div style="flex: 1; background: #F0FDF4; border-radius: 10px; padding: 12px;">
-          <p style="font-size: 20px; font-weight: 700; color: #52B788; margin: 0;">${weekStats.completed}</p>
+        <div style="flex: 1; background: #FFF0E5; border-radius: 10px; padding: 12px;">
+          <p style="font-size: 20px; font-weight: 700; color: #E8855B; margin: 0;">${weekStats.completed}</p>
           <p style="font-size: 11px; color: #6B7280; margin: 4px 0 0;">Completed</p>
         </div>
-        <div style="flex: 1; background: #F0FDF4; border-radius: 10px; padding: 12px;">
+        <div style="flex: 1; background: #FFF0E5; border-radius: 10px; padding: 12px;">
           <p style="font-size: 20px; font-weight: 700; color: #8B6914; margin: 0;">${weekStats.new_volunteers}</p>
           <p style="font-size: 11px; color: #6B7280; margin: 4px 0 0;">Volunteers</p>
         </div>
       </div>
 
-      <h3 style="color: #1B4332; font-size: 15px; margin: 20px 0 12px;">Tasks Looking for Help</h3>
+      <h3 style="color: #1A1A1A; font-size: 15px; margin: 20px 0 12px;">Tasks Looking for Help</h3>
       ${taskListHtml}
 
       <div style="text-align: center; margin-top: 24px;">
-        <a href="${BASE_URL}" style="display: inline-block; background: #1B4332; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600;">
+        <a href="${BASE_URL}" style="display: inline-block; background: #1A1A1A; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600;">
           View All Tasks
         </a>
       </div>

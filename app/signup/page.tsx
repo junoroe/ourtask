@@ -44,8 +44,8 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--cream)' }}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <span className="text-4xl">🌿</span>
-          <h1 className="text-2xl font-bold mt-3" style={{ color: 'var(--forest)' }}>
+          <span className="text-4xl">✦</span>
+          <h1 className="text-2xl font-bold mt-3" style={{ color: 'var(--dark)' }}>
             Join OurTask
           </h1>
           <p className="text-gray-500 mt-1">Help make your community better</p>
@@ -63,7 +63,7 @@ export default function SignupPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
               placeholder="Your name"
               maxLength={255}
             />
@@ -76,7 +76,7 @@ export default function SignupPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
               placeholder="you@example.com"
             />
           </div>
@@ -88,7 +88,7 @@ export default function SignupPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
               placeholder="Min 8 chars, uppercase, lowercase, number"
             />
           </div>
@@ -98,13 +98,13 @@ export default function SignupPage() {
             disabled={loading}
             className="btn-primary w-full disabled:opacity-50"
           >
-            {loading ? 'Creating account...' : '🌿 Create Account'}
+            {loading ? 'Creating account...' : '✦ Create Account'}
           </button>
         </form>
 
         <p className="text-center mt-4 text-sm text-gray-500">
           Already have an account?{' '}
-          <Link href="/login" className="text-green-700 font-medium hover:underline">
+          <Link href="/login" className="text-orange-600 font-medium hover:underline">
             Sign in
           </Link>
         </p>

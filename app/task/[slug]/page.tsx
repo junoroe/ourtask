@@ -167,7 +167,7 @@ export default function TaskDetailPage() {
         <div className="text-center">
           <p className="text-4xl mb-3">🔍</p>
           <p className="text-gray-500">Task not found</p>
-          <Link href="/" className="text-green-700 hover:underline mt-2 inline-block">
+          <Link href="/" className="text-orange-600 hover:underline mt-2 inline-block">
             ← Back to map
           </Link>
         </div>
@@ -182,7 +182,7 @@ export default function TaskDetailPage() {
     <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Breadcrumb */}
-        <Link href="/" className="text-sm text-gray-500 hover:text-green-700 mb-4 inline-block">
+        <Link href="/" className="text-sm text-gray-500 hover:text-orange-600 mb-4 inline-block">
           ← Back to map
         </Link>
 
@@ -192,7 +192,7 @@ export default function TaskDetailPage() {
             <div className="relative">
               <img src={task.photo_url} alt={task.title} className="w-full h-64 sm:h-80 object-cover" />
               {task.status === 'completed' && (
-                <div className="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded-full font-semibold text-sm">
+                <div className="absolute top-4 right-4 bg-emerald-600 text-white px-3 py-1 rounded-full font-semibold text-sm">
                   ✅ Completed!
                 </div>
               )}
@@ -206,7 +206,7 @@ export default function TaskDetailPage() {
                 {CATEGORY_ICONS[task.category]} {CATEGORY_LABELS[task.category]}
               </span>
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                task.status === 'completed' ? 'bg-green-100 text-green-700' :
+                task.status === 'completed' ? 'bg-emerald-100 text-emerald-700' :
                 task.status === 'open' ? 'bg-blue-100 text-blue-700' :
                 'bg-yellow-100 text-yellow-700'
               }`}>
@@ -268,7 +268,7 @@ export default function TaskDetailPage() {
                 {isOwner ? (
                   <div className="space-y-3">
                     <p className="text-sm text-gray-600 font-medium">Ready to mark this done?</p>
-                    <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-green-400 transition-colors">
+                    <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-orange-400 transition-colors">
                       {afterPreview ? (
                         <div className="relative">
                           <img src={afterPreview} alt="After" className="max-h-40 mx-auto rounded-lg" />
@@ -303,7 +303,7 @@ export default function TaskDetailPage() {
                   </div>
                 ) : isVolunteered ? (
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 text-green-700 font-semibold">
+                    <div className="flex items-center gap-2 text-orange-600 font-semibold">
                       <span>✅</span> You're signed up!
                     </div>
                     <button onClick={handleLeave} className="text-sm text-gray-400 hover:text-red-500">
@@ -316,7 +316,7 @@ export default function TaskDetailPage() {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Add a message (optional) — e.g., 'I can bring trash bags!'"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
                       rows={2}
                       maxLength={500}
                     />
@@ -329,7 +329,7 @@ export default function TaskDetailPage() {
                     </button>
                     {!user && (
                       <p className="text-xs text-gray-400">
-                        You'll need to <Link href="/login" className="text-green-700 hover:underline">sign in</Link> to volunteer
+                        You'll need to <Link href="/login" className="text-orange-600 hover:underline">sign in</Link> to volunteer
                       </p>
                     )}
                   </div>
@@ -357,7 +357,7 @@ export default function TaskDetailPage() {
                 <div className="space-y-2">
                   {volunteers.map((v: any) => (
                     <div key={v.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-sm">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style={{ background: 'var(--accent)', color: 'var(--dark)' }}>
                         {v.name.charAt(0).toUpperCase()}
                       </div>
                       <div>

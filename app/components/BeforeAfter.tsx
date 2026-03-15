@@ -93,7 +93,7 @@ export default function BeforeAfter({ before, after, title }: BeforeAfterProps) 
         <div className="absolute bottom-3 left-3 bg-black/60 text-white text-xs px-2 py-1 rounded-md font-medium">
           Before
         </div>
-        <div className="absolute bottom-3 right-3 bg-green-600/80 text-white text-xs px-2 py-1 rounded-md font-medium">
+        <div className="absolute bottom-3 right-3 bg-orange-500/80 text-white text-xs px-2 py-1 rounded-md font-medium">
           After ✨
         </div>
       </div>

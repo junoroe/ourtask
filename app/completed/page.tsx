@@ -30,7 +30,7 @@ export default function CompletedPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: 'var(--forest)' }}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: 'var(--dark)' }}>
             ✨ Impact Wall
           </h1>
           <p className="text-gray-600 text-lg max-w-xl mx-auto">
@@ -42,13 +42,13 @@ export default function CompletedPage() {
         {stats && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center">
-              <p className="text-3xl font-bold" style={{ color: 'var(--forest)' }}>
+              <p className="text-3xl font-bold" style={{ color: 'var(--dark)' }}>
                 {stats.total_tasks || 0}
               </p>
               <p className="text-xs text-gray-500 uppercase tracking-wide mt-1">Tasks Posted</p>
             </div>
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center">
-              <p className="text-3xl font-bold" style={{ color: 'var(--sage)' }}>
+              <p className="text-3xl font-bold" style={{ color: 'var(--primary)' }}>
                 {stats.completed_tasks || 0}
               </p>
               <p className="text-xs text-gray-500 uppercase tracking-wide mt-1">Completed</p>

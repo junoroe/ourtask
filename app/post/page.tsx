@@ -154,7 +154,7 @@ export default function PostTaskPage() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--forest)' }}>
+        <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--dark)' }}>
           Post a Task
         </h1>
         <p className="text-gray-500 mb-6">What needs doing? Let's rally people to help.</p>
@@ -165,7 +165,7 @@ export default function PostTaskPage() {
             <div
               key={s}
               className={`h-1.5 flex-1 rounded-full transition-colors ${
-                s <= step ? 'bg-green-600' : 'bg-gray-200'
+                s <= step ? 'bg-orange-500' : 'bg-gray-200'
               }`}
             />
           ))}
@@ -186,8 +186,8 @@ export default function PostTaskPage() {
                   onClick={() => { setCategory(cat.key); setStep(2); }}
                   className={`p-4 rounded-xl text-left transition-all border-2 ${
                     category === cat.key
-                      ? 'border-green-600 bg-green-50'
-                      : 'border-gray-100 bg-white hover:border-green-300'
+                      ? 'border-orange-500 bg-orange-50'
+                      : 'border-gray-100 bg-white hover:border-orange-300'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -217,7 +217,7 @@ export default function PostTaskPage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., Clean up Illahee Beach trail"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
                 maxLength={255}
               />
             </div>
@@ -230,7 +230,7 @@ export default function PostTaskPage() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe the task in detail. What will volunteers be doing? What should they bring? Any special instructions?"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
                 rows={5}
                 maxLength={5000}
               />
@@ -241,7 +241,7 @@ export default function PostTaskPage() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Photo
               </label>
-              <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-green-400 transition-colors">
+              <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-orange-400 transition-colors">
                 {photoPreview ? (
                   <div className="relative">
                     <img src={photoPreview} alt="Preview" className="max-h-48 mx-auto rounded-lg" />
@@ -312,7 +312,7 @@ export default function PostTaskPage() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Enter address or location name"
-                  className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
                   onKeyDown={(e) => e.key === 'Enter' && searchAddress()}
                 />
                 <button
@@ -325,7 +325,7 @@ export default function PostTaskPage() {
               </div>
               <button
                 onClick={useMyLocation}
-                className="text-xs text-green-700 hover:underline mt-1"
+                className="text-xs text-orange-600 hover:underline mt-1"
               >
                 📍 Use my current location
               </button>
@@ -352,7 +352,7 @@ export default function PostTaskPage() {
                   type="datetime-local"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
                 />
               </div>
               <div>
@@ -362,7 +362,7 @@ export default function PostTaskPage() {
                   value={estimatedDuration}
                   onChange={(e) => setEstimatedDuration(e.target.value)}
                   placeholder="e.g., 2 hours"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
                 />
               </div>
             </div>
@@ -377,7 +377,7 @@ export default function PostTaskPage() {
                 onChange={(e) => setVolunteersNeeded(Math.max(1, parseInt(e.target.value) || 1))}
                 min={1}
                 max={500}
-                className="w-32 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-32 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
               />
             </div>
 
@@ -394,7 +394,7 @@ export default function PostTaskPage() {
                 disabled={submitting}
                 className="btn-primary flex-1 disabled:opacity-50"
               >
-                {uploading ? 'Uploading photo...' : submitting ? 'Posting...' : '🌿 Post Task'}
+                {uploading ? 'Uploading photo...' : submitting ? 'Posting...' : '✦ Post Task'}
               </button>
             </div>
           </div>

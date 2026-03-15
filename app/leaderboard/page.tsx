@@ -20,7 +20,7 @@ export default function LeaderboardPage() {
     <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: 'var(--forest)' }}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: 'var(--dark)' }}>
             🏆 Leaderboard
           </h1>
           <p className="text-gray-600 text-lg">
@@ -50,7 +50,7 @@ export default function LeaderboardPage() {
               </thead>
               <tbody>
                 {leaders.map((user, i) => (
-                  <tr key={i} className={`border-b border-gray-50 ${i < 3 ? 'bg-green-50/30' : ''}`}>
+                  <tr key={i} className={`border-b border-gray-50 ${i < 3 ? 'bg-orange-50/30' : ''}`}>
                     <td className="px-5 py-4 text-lg font-bold">
                       {i < 3 ? medals[i] : <span className="text-gray-400 text-sm">{i + 1}</span>}
                     </td>
@@ -58,7 +58,7 @@ export default function LeaderboardPage() {
                       <span className="font-semibold text-gray-800">{user.name}</span>
                     </td>
                     <td className="px-5 py-4 text-center">
-                      <span className="font-bold" style={{ color: 'var(--forest)' }}>{user.volunteer_count}</span>
+                      <span className="font-bold" style={{ color: 'var(--dark)' }}>{user.volunteer_count}</span>
                     </td>
                     <td className="px-5 py-4 text-center">
                       <span className="font-bold text-gray-600">{user.tasks_created}</span>

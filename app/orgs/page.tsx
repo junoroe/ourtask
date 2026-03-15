@@ -27,7 +27,7 @@ export default function OrgsPage() {
     <div className="min-h-screen" style={{ background: 'var(--cream)' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: 'var(--forest)' }}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: 'var(--dark)' }}>
             🤝 Partner Organizations
           </h1>
           <p className="text-gray-600 text-lg max-w-xl mx-auto">
@@ -55,7 +55,7 @@ export default function OrgsPage() {
                     {org.logo_url ? (
                       <img src={org.logo_url} alt={org.name} className="w-12 h-12 rounded-lg object-cover" />
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center text-2xl">
+                      <div className="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center text-2xl">
                         {ORG_CATEGORIES[org.category]?.icon || '🏢'}
                       </div>
                     )}
@@ -63,7 +63,7 @@ export default function OrgsPage() {
                       <div className="flex items-center gap-2">
                         <h3 className="font-bold text-gray-900 truncate">{org.name}</h3>
                         {org.is_verified && (
-                          <span className="flex-shrink-0 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">
+                          <span className="flex-shrink-0 text-xs bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-semibold">
                             ✅ Verified
                           </span>
                         )}
