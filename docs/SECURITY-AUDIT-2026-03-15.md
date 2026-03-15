@@ -41,6 +41,22 @@ Bearer token (not cookie-based), but worth noting.
 users see `&lt;` literally. Should store raw and escape on output, or
 at minimum ensure consistent handling.
 
+## Deep Dive — Round 2 (10 additional issues found & fixed)
+
+### 🔴 HIGH
+8. **User enumeration via timing** — Login with unknown email skipped bcrypt (fast) vs known email (slow). Fix: dummy bcrypt.compare on unknown emails.
+9. **Upload accepts fake MIME types** — No magic byte validation. Could upload HTML with `Content-Type: image/jpeg`. Fix: validate JPEG/PNG/WebP magic bytes before writing.
+10. **Org detail endpoint leaks contact info** — `SELECT o.*` returned contact_email, contact_phone to any visitor. Fix: explicit column list.
+
+### 🟡 MEDIUM  
+11. **Sponsor creation open to all users** — Any logged-in user could POST /api/sponsors. Fix: admin-only (is_admin flag).
+12. **User IDs exposed in public APIs** — creator_id in task listings, user.id in leaderboard. Fix: stripped from list/leaderboard, kept only in task detail (needed for ownership check).
+13. **No photo_url validation on task creation** — Accepted any URL (XSS, tracking). Fix: validate `/uploads/` pattern.
+14. **volunteers_needed unbounded** — Could set to 999999. Fix: capped at 1-500.
+15. **Org contact_email not validated** — Accepted any string. Fix: isValidEmail() check + description/website length limits.
+16. **Nginx server version disclosed** — `Server: nginx/1.24.0 (Ubuntu)`. Fix: `server_tokens off`.
+17. **No cleanup for login_attempts/token_blacklist** — Tables grow unbounded. Fix: daily cron cleanup at 3am/4am UTC.
+
 ## 🟢 What's Good
 - JWT with lazy secret validation ✅
 - Token blacklist on logout ✅
