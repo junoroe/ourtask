@@ -36,7 +36,7 @@ export default function Navbar() {
       <Link
         href={href}
         className={`text-sm font-medium transition-colors ${
-          active ? 'text-orange-600' : 'text-gray-600 hover:text-orange-600'
+          active ? 'text-orange-400' : 'text-gray-300 hover:text-white'
         }`}
       >
         {label}
@@ -45,12 +45,12 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-[1000]">
+    <nav className="sticky top-0 z-[1000]" style={{ background: '#1A1A1A' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center group">
-            <img src="/logo.png" alt="OurTask" className="h-10 rounded-lg" />
+        <div className="flex justify-between items-center h-20">
+          {/* Logo — large */}
+          <Link href="/" className="flex items-center group flex-shrink-0">
+            <img src="/logo.png" alt="OurTask" className="h-14 rounded-lg" />
           </Link>
 
           {/* Desktop Nav */}
@@ -65,10 +65,17 @@ export default function Navbar() {
                 <Link href="/post" className="btn-primary text-sm !py-2 !px-4">
                   + Post a Task
                 </Link>
-                {navLink('/dashboard', 'Dashboard')}
+                <Link
+                  href="/dashboard"
+                  className={`text-sm font-medium transition-colors ${
+                    pathname === '/dashboard' ? 'text-orange-400' : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  Dashboard
+                </Link>
                 <button
                   onClick={handleLogout}
-                  className="text-sm text-gray-500 hover:text-gray-700"
+                  className="text-sm text-gray-400 hover:text-gray-200"
                 >
                   Sign Out
                 </button>
@@ -77,7 +84,7 @@ export default function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors"
+                  className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
                 >
                   Sign In
                 </Link>
@@ -90,7 +97,7 @@ export default function Navbar() {
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-gray-300"
             onClick={() => setMobileMenu(!mobileMenu)}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,18 +112,18 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {mobileMenu && (
-          <div className="md:hidden pb-4 fade-in">
-            <div className="flex flex-col gap-3">
-              <Link href="/completed" className="text-sm font-medium text-gray-600 py-2" onClick={() => setMobileMenu(false)}>
+          <div className="md:hidden pb-4 fade-in border-t border-gray-700">
+            <div className="flex flex-col gap-3 pt-3">
+              <Link href="/completed" className="text-sm font-medium text-gray-300 py-2" onClick={() => setMobileMenu(false)}>
                 ✨ Impact Wall
               </Link>
-              <Link href="/orgs" className="text-sm font-medium text-gray-600 py-2" onClick={() => setMobileMenu(false)}>
+              <Link href="/orgs" className="text-sm font-medium text-gray-300 py-2" onClick={() => setMobileMenu(false)}>
                 🤝 Orgs
               </Link>
-              <Link href="/leaderboard" className="text-sm font-medium text-gray-600 py-2" onClick={() => setMobileMenu(false)}>
+              <Link href="/leaderboard" className="text-sm font-medium text-gray-300 py-2" onClick={() => setMobileMenu(false)}>
                 🏆 Leaderboard
               </Link>
-              <Link href="/cities" className="text-sm font-medium text-gray-600 py-2" onClick={() => setMobileMenu(false)}>
+              <Link href="/cities" className="text-sm font-medium text-gray-300 py-2" onClick={() => setMobileMenu(false)}>
                 🏘️ Cities
               </Link>
               {user ? (
@@ -124,16 +131,16 @@ export default function Navbar() {
                   <Link href="/post" className="btn-primary text-sm text-center" onClick={() => setMobileMenu(false)}>
                     + Post a Task
                   </Link>
-                  <Link href="/dashboard" className="text-sm font-medium text-gray-600 py-2" onClick={() => setMobileMenu(false)}>
+                  <Link href="/dashboard" className="text-sm font-medium text-gray-300 py-2" onClick={() => setMobileMenu(false)}>
                     Dashboard
                   </Link>
-                  <button onClick={handleLogout} className="text-sm text-gray-500 text-left py-2">
+                  <button onClick={handleLogout} className="text-sm text-gray-400 text-left py-2">
                     Sign Out
                   </button>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="text-sm font-medium text-gray-600 py-2" onClick={() => setMobileMenu(false)}>
+                  <Link href="/login" className="text-sm font-medium text-gray-300 py-2" onClick={() => setMobileMenu(false)}>
                     Sign In
                   </Link>
                   <Link href="/signup" className="btn-primary text-sm text-center" onClick={() => setMobileMenu(false)}>
