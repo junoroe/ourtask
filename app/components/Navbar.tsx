@@ -69,6 +69,22 @@ export default function Navbar() {
             >
               🤝 Orgs
             </Link>
+            <Link
+              href="/leaderboard"
+              className={`text-sm font-medium transition-colors ${
+                pathname === '/leaderboard' ? 'text-green-700' : 'text-gray-600 hover:text-green-700'
+              }`}
+            >
+              🏆 Leaderboard
+            </Link>
+            <Link
+              href="/cities"
+              className={`text-sm font-medium transition-colors ${
+                pathname?.startsWith('/cities') ? 'text-green-700' : 'text-gray-600 hover:text-green-700'
+              }`}
+            >
+              🏘️ Cities
+            </Link>
             
             {user ? (
               <>

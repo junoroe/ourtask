@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { query } from '../../../../../lib/db';
 import { getCurrentUser } from '../../../../../lib/auth';
 import { notifyVolunteerJoined } from '../../../../../lib/email';
+import { checkAndAwardBadges } from '../../../../../lib/badges';
 
 // POST /api/tasks/[slug]/volunteer — join a task
 export async function POST(req: Request, { params }: { params: { slug: string } }) {
@@ -68,7 +69,14 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
       console.error('Notification error:', err.message)
     );
 
-    return NextResponse.json({ success: true, message: "You're in! 🎉" });
+    // Check for new badges
+    const newBadges = await checkAndAwardBadges(user.id).catch(() => []);
+
+    return NextResponse.json({
+      success: true,
+      message: "You're in! 🎉",
+      new_badges: newBadges,
+    });
   } catch (error: any) {
     console.error('Volunteer error:', error.message);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

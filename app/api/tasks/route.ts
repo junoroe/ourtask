@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import { query } from '../../../lib/db';
 import { getCurrentUser } from '../../../lib/auth';
 import { isValidCategory, isValidLatLng, sanitizeText } from '../../../lib/validation';
+import { moderateTask, logModeration } from '../../../lib/moderation';
 
 // GET /api/tasks — list tasks (with optional filters)
 export async function GET(req: Request) {
@@ -111,19 +112,64 @@ export async function POST(req: Request) {
       .substring(0, 60)
       + '-' + crypto.randomBytes(4).toString('hex');
 
+    // AI moderation check
+    const modResult = moderateTask(sanitizeText(title), sanitizeText(description));
+
+    if (!modResult.approved) {
+      return NextResponse.json({
+        error: 'This task was flagged by our content policy. OurTask is for physical community action that everyone can agree makes the place better — no political, commercial, or fundraising content.',
+        flags: modResult.flags,
+      }, { status: 422 });
+    }
+
+    // Extract city from address for dashboard grouping
+    const city = address ? extractCity(address) : null;
+
+    const isApproved = modResult.autoApproved; // if warnings, needs manual review
+
     const result = await query(
-      `INSERT INTO tasks (user_id, title, slug, description, category, latitude, longitude, address, event_date, estimated_duration, volunteers_needed, photo_url)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      `INSERT INTO tasks (user_id, title, slug, description, category, latitude, longitude, address, city, event_date, estimated_duration, volunteers_needed, photo_url, is_approved)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
        RETURNING id, slug`,
-      [user.id, sanitizeText(title), slug, sanitizeText(description), category, latitude, longitude, address || null, event_date || null, estimated_duration || null, volunteers_needed || 1, photo_url || null]
+      [user.id, sanitizeText(title), slug, sanitizeText(description), category, latitude, longitude, address || null, city, event_date || null, estimated_duration || null, volunteers_needed || 1, photo_url || null, isApproved]
+    );
+
+    // Log moderation result
+    logModeration(result.rows[0].id, modResult).catch(err =>
+      console.error('Moderation log error:', err.message)
     );
 
     // Update user's task count
     await query('UPDATE users SET tasks_created = tasks_created + 1 WHERE id = $1', [user.id]);
 
-    return NextResponse.json({ task: result.rows[0] }, { status: 201 });
+    const response: any = { task: result.rows[0] };
+    if (!isApproved) {
+      response.message = 'Your task has been submitted for review. It will appear on the map once approved.';
+      response.pending_review = true;
+    }
+
+    return NextResponse.json(response, { status: 201 });
   } catch (error: any) {
     console.error('Create task error:', error.message);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
+}
+
+// Extract city name from an address string
+function extractCity(address: string): string | null {
+  const cities = [
+    'Bremerton', 'Silverdale', 'Poulsbo', 'Port Orchard', 'Bainbridge Island',
+    'Kingston', 'Seabeck', 'Keyport', 'Suquamish', 'Indianola', 'Manchester',
+    'Gorst', 'Tracyton', 'Illahee', 'Brownsville', 'Hansville', 'Olalla',
+    'Southworth', 'Port Gamble', 'Bangor', 'Chico', 'Eglon',
+  ];
+  const lower = address.toLowerCase();
+  for (const city of cities) {
+    if (lower.includes(city.toLowerCase())) return city;
+  }
+  const parts = address.split(',').map(s => s.trim());
+  if (parts.length >= 2) {
+    return parts[parts.length - 2].replace(/\d{5}.*/, '').trim() || null;
+  }
+  return null;
 }
