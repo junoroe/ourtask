@@ -4,12 +4,12 @@ import { sendWeeklyDigest } from '../../../../lib/email';
 // GET /api/cron/digest — trigger weekly digest (called by cron)
 export async function GET(req: Request) {
   try {
-    // Simple auth: check for cron secret
+    // Auth: require cron secret
     const url = new URL(req.url);
     const secret = url.searchParams.get('secret');
     const cronSecret = process.env.CRON_SECRET;
 
-    if (cronSecret && secret !== cronSecret) {
+    if (!cronSecret || secret !== cronSecret) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

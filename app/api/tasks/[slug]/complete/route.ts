@@ -12,7 +12,12 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
     }
 
     const body = await req.json().catch(() => ({}));
-    const { photo_after_url } = body;
+    let { photo_after_url } = body;
+
+    // Validate photo_after_url is a local upload path
+    if (photo_after_url && !/^\/uploads\/\d+-[a-f0-9]+\.(jpg|png|webp)$/.test(photo_after_url)) {
+      photo_after_url = null;
+    }
 
     const taskResult = await query(
       'SELECT id, user_id, status FROM tasks WHERE slug = $1',

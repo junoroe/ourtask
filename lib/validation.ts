@@ -14,10 +14,12 @@ export function isStrongPassword(password: string): boolean {
 }
 
 export function sanitizeText(text: string): string {
+  // Strip null bytes and control characters, but don't HTML-encode.
+  // React handles HTML escaping on render. Encoding here causes
+  // double-encoding (&amp;lt; displayed to users).
   return text
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+    .replace(/\0/g, '')
+    .replace(/[\x01-\x08\x0B\x0C\x0E-\x1F]/g, '')
     .trim();
 }
 

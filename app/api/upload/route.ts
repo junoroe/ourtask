@@ -37,10 +37,13 @@ export async function POST(req: Request) {
     // Ensure upload dir exists
     await mkdir(UPLOAD_DIR, { recursive: true });
 
-    // Write file
+    // Write file with path containment check
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const filepath = path.join(UPLOAD_DIR, filename);
+    const filepath = path.resolve(UPLOAD_DIR, filename);
+    if (!filepath.startsWith(path.resolve(UPLOAD_DIR))) {
+      return NextResponse.json({ error: 'Invalid filename' }, { status: 400 });
+    }
     await writeFile(filepath, buffer);
 
     const url = `/uploads/${filename}`;
