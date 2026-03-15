@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query } from '../../../../../lib/db';
 import { getCurrentUser } from '../../../../../lib/auth';
+import { notifyVolunteerJoined } from '../../../../../lib/email';
 
 // POST /api/tasks/[slug]/volunteer — join a task
 export async function POST(req: Request, { params }: { params: { slug: string } }) {
@@ -61,6 +62,11 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
 
     // Update user stats
     await query('UPDATE users SET volunteer_count = volunteer_count + 1 WHERE id = $1', [user.id]);
+
+    // Send notification to task creator (async, don't block response)
+    notifyVolunteerJoined(task.id, user.name, message).catch(err => 
+      console.error('Notification error:', err.message)
+    );
 
     return NextResponse.json({ success: true, message: "You're in! 🎉" });
   } catch (error: any) {

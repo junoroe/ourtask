@@ -61,6 +61,14 @@ export default function Navbar() {
             >
               ✨ Impact Wall
             </Link>
+            <Link
+              href="/orgs"
+              className={`text-sm font-medium transition-colors ${
+                pathname?.startsWith('/orgs') ? 'text-green-700' : 'text-gray-600 hover:text-green-700'
+              }`}
+            >
+              🤝 Orgs
+            </Link>
             
             {user ? (
               <>

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query } from '../../../../../lib/db';
 import { getCurrentUser } from '../../../../../lib/auth';
+import { notifyTaskCompleted } from '../../../../../lib/email';
 
 // POST /api/tasks/[slug]/complete — mark task as completed (owner only)
 export async function POST(req: Request, { params }: { params: { slug: string } }) {
@@ -45,6 +46,11 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
     await query(
       "UPDATE volunteers SET status = 'completed' WHERE task_id = $1 AND status = 'confirmed'",
       [task.id]
+    );
+
+    // Notify volunteers (async)
+    notifyTaskCompleted(task.id).catch(err =>
+      console.error('Completion notification error:', err.message)
     );
 
     return NextResponse.json({ success: true, message: 'Task completed! 🎉 Thank you for making a difference!' });

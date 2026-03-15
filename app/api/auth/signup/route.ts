@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { query } from '../../../../lib/db';
 import { hashPassword, generateToken } from '../../../../lib/auth';
 import { isValidEmail, isStrongPassword } from '../../../../lib/validation';
+import { sendWelcomeEmail } from '../../../../lib/email';
 
 export async function POST(req: Request) {
   try {
@@ -42,6 +43,11 @@ export async function POST(req: Request) {
 
     const user = result.rows[0];
     const token = generateToken(user);
+
+    // Send welcome email (async)
+    sendWelcomeEmail(user.email, user.name).catch(err =>
+      console.error('Welcome email error:', err.message)
+    );
 
     return NextResponse.json({ token, user: { id: user.id, email: user.email, name: user.name } });
   } catch (error: any) {
