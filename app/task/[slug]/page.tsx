@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 const TaskMap = dynamic(() => import('../../components/TaskMap'), { ssr: false });
+import BeforeAfter from '../../components/BeforeAfter';
 
 const CATEGORY_ICONS: Record<string, string> = {
   clean: '🧹', green: '🌱', fix: '🔧', feed: '🍱', build: '🏗️', serve: '👐',
@@ -26,6 +27,9 @@ export default function TaskDetailPage() {
   const [volunteering, setVolunteering] = useState(false);
   const [isVolunteered, setIsVolunteered] = useState(false);
   const [message, setMessage] = useState('');
+  const [afterPhoto, setAfterPhoto] = useState<File | null>(null);
+  const [afterPreview, setAfterPreview] = useState('');
+  const [completing, setCompleting] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem('user');
@@ -109,15 +113,32 @@ export default function TaskDetailPage() {
     if (!token) return;
 
     if (!confirm('Mark this task as completed?')) return;
+    setCompleting(true);
 
     try {
+      // Upload after photo if provided
+      let photoAfterUrl = null;
+      if (afterPhoto) {
+        const formData = new FormData();
+        formData.append('file', afterPhoto);
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData,
+        });
+        const uploadData = await uploadRes.json();
+        if (uploadRes.ok) {
+          photoAfterUrl = uploadData.url;
+        }
+      }
+
       const res = await fetch(`/api/tasks/${params.slug}/complete`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ photo_after_url: photoAfterUrl }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -127,6 +148,8 @@ export default function TaskDetailPage() {
       }
     } catch (error) {
       alert('Failed to complete task');
+    } finally {
+      setCompleting(false);
     }
   }
 
@@ -243,9 +266,41 @@ export default function TaskDetailPage() {
             {task.status !== 'completed' && task.status !== 'cancelled' && (
               <div className="border-t border-gray-100 pt-6">
                 {isOwner ? (
-                  <button onClick={handleComplete} className="btn-primary w-full sm:w-auto">
-                    ✅ Mark as Completed
-                  </button>
+                  <div className="space-y-3">
+                    <p className="text-sm text-gray-600 font-medium">Ready to mark this done?</p>
+                    <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-green-400 transition-colors">
+                      {afterPreview ? (
+                        <div className="relative">
+                          <img src={afterPreview} alt="After" className="max-h-40 mx-auto rounded-lg" />
+                          <button
+                            type="button"
+                            onClick={() => { setAfterPhoto(null); setAfterPreview(''); }}
+                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs font-bold"
+                          >✕</button>
+                        </div>
+                      ) : (
+                        <label className="cursor-pointer block">
+                          <span className="text-2xl block mb-1">📸</span>
+                          <span className="text-sm text-gray-500">Add an "after" photo (optional)</span>
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                setAfterPhoto(file);
+                                setAfterPreview(URL.createObjectURL(file));
+                              }
+                            }}
+                          />
+                        </label>
+                      )}
+                    </div>
+                    <button onClick={handleComplete} disabled={completing} className="btn-primary w-full sm:w-auto disabled:opacity-50">
+                      {completing ? 'Completing...' : '✅ Mark as Completed'}
+                    </button>
+                  </div>
                 ) : isVolunteered ? (
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 text-green-700 font-semibold">
@@ -282,20 +337,14 @@ export default function TaskDetailPage() {
               </div>
             )}
 
-            {/* Before/After comparison */}
+            {/* Before/After comparison slider */}
             {task.photo_url && task.photo_after_url && (
               <div className="border-t border-gray-100 pt-6 mt-6">
                 <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Before & After</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-xs text-gray-400 mb-1">Before</p>
-                    <img src={task.photo_url} alt="Before" className="w-full h-48 object-cover rounded-lg" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400 mb-1">After ✨</p>
-                    <img src={task.photo_after_url} alt="After" className="w-full h-48 object-cover rounded-lg" />
-                  </div>
-                </div>
+                <BeforeAfter
+                  before={task.photo_url}
+                  after={task.photo_after_url}
+                />
               </div>
             )}
 

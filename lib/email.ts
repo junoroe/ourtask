@@ -215,3 +215,110 @@ export async function sendWelcomeEmail(email: string, name: string) {
 
   await sendEmail({ to: email, toName: name, subject, html });
 }
+
+export async function sendWeeklyDigest() {
+  // Get users who want notifications and haven't received a digest in 6+ days
+  const users = await query(`
+    SELECT id, email, name, notify_nearby_radius, notify_categories
+    FROM users
+    WHERE notify_email = true
+    AND (last_digest_at IS NULL OR last_digest_at < NOW() - INTERVAL '6 days')
+  `);
+
+  const CATEGORY_ICONS: Record<string, string> = {
+    clean: '🧹', green: '🌱', fix: '🔧', feed: '🍱', build: '🏗️', serve: '👐',
+  };
+
+  let sentCount = 0;
+
+  for (const user of users.rows) {
+    // Get recent tasks (created in last 7 days)
+    const tasks = await query(`
+      SELECT t.title, t.slug, t.category, t.address, t.event_date,
+             t.volunteers_needed, t.volunteers_count, t.created_at
+      FROM tasks t
+      WHERE t.is_approved = true
+      AND t.status IN ('open', 'scheduled')
+      AND t.created_at > NOW() - INTERVAL '7 days'
+      ORDER BY t.created_at DESC
+      LIMIT 8
+    `);
+
+    if (tasks.rows.length === 0) continue;
+
+    // Get community stats for the week
+    const stats = await query(`
+      SELECT
+        (SELECT COUNT(*) FROM tasks WHERE created_at > NOW() - INTERVAL '7 days') as new_tasks,
+        (SELECT COUNT(*) FROM tasks WHERE status = 'completed' AND completed_at > NOW() - INTERVAL '7 days') as completed,
+        (SELECT COUNT(*) FROM volunteers WHERE created_at > NOW() - INTERVAL '7 days') as new_volunteers
+    `);
+    const weekStats = stats.rows[0];
+
+    const taskListHtml = tasks.rows.map((t: any) => `
+      <div style="padding: 12px; background: #F8FAF5; border-radius: 10px; margin-bottom: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span style="font-size: 16px;">${CATEGORY_ICONS[t.category] || '📌'}</span>
+          <a href="${BASE_URL}/task/${t.slug}" style="font-weight: 600; color: #1B4332; text-decoration: none; font-size: 14px;">
+            ${escapeHtml(t.title)}
+          </a>
+        </div>
+        ${t.address ? `<p style="font-size: 12px; color: #6B7280; margin: 2px 0;">📍 ${escapeHtml(t.address)}</p>` : ''}
+        <p style="font-size: 12px; color: #6B7280; margin: 2px 0;">
+          👥 ${t.volunteers_count}/${t.volunteers_needed} volunteers
+          ${t.event_date ? ` · 📅 ${new Date(t.event_date).toLocaleDateString()}` : ''}
+        </p>
+      </div>
+    `).join('');
+
+    const subject = `🌿 This week on OurTask: ${tasks.rows.length} tasks need your help`;
+    const html = emailTemplate('Your Weekly Round-Up', `
+      <p style="color: #374151; line-height: 1.6;">
+        Hey ${escapeHtml(user.name)},
+      </p>
+      <p style="color: #374151; line-height: 1.6;">
+        Here's what's happening in your community this week:
+      </p>
+
+      <!-- Week stats -->
+      <div style="display: flex; gap: 12px; margin: 16px 0; text-align: center;">
+        <div style="flex: 1; background: #F0FDF4; border-radius: 10px; padding: 12px;">
+          <p style="font-size: 20px; font-weight: 700; color: #1B4332; margin: 0;">${weekStats.new_tasks}</p>
+          <p style="font-size: 11px; color: #6B7280; margin: 4px 0 0;">New Tasks</p>
+        </div>
+        <div style="flex: 1; background: #F0FDF4; border-radius: 10px; padding: 12px;">
+          <p style="font-size: 20px; font-weight: 700; color: #52B788; margin: 0;">${weekStats.completed}</p>
+          <p style="font-size: 11px; color: #6B7280; margin: 4px 0 0;">Completed</p>
+        </div>
+        <div style="flex: 1; background: #F0FDF4; border-radius: 10px; padding: 12px;">
+          <p style="font-size: 20px; font-weight: 700; color: #8B6914; margin: 0;">${weekStats.new_volunteers}</p>
+          <p style="font-size: 11px; color: #6B7280; margin: 4px 0 0;">Volunteers</p>
+        </div>
+      </div>
+
+      <h3 style="color: #1B4332; font-size: 15px; margin: 20px 0 12px;">Tasks Looking for Help</h3>
+      ${taskListHtml}
+
+      <div style="text-align: center; margin-top: 24px;">
+        <a href="${BASE_URL}" style="display: inline-block; background: #1B4332; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600;">
+          View All Tasks
+        </a>
+      </div>
+    `);
+
+    const messageId = await sendEmail({ to: user.email, toName: user.name, subject, html });
+
+    // Update last digest timestamp
+    await query('UPDATE users SET last_digest_at = NOW() WHERE id = $1', [user.id]);
+
+    // Log notification
+    await query(
+      'INSERT INTO notifications (user_id, type, subject, email_id) VALUES ($1, $2, $3, $4)',
+      [user.id, 'weekly_digest', subject, messageId]
+    );
+
+    sentCount++;
+  }
+
+  return sentCount;
+}
